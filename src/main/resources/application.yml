@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: room-booking-service
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
