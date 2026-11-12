@@ -15,7 +15,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final Map<String, String> MESSAGES = Map.ofEntries(
-            Map.entry("users_email_uq", "Пользователь с таким email уже существует")
+            Map.entry("users_email_uq", "Пользователь с таким email уже существует"),
+            Map.entry("rooms_name_uq", "Комната с таким названием уже существует"),
+            Map.entry("rooms_name_not_blank", "Название комнаты не может быть пустым"),
+            Map.entry("rooms_capacity_range", "Вместимость должна быть от 1 до 500")
     );
 
     @ExceptionHandler(DataIntegrityViolationException.class)
