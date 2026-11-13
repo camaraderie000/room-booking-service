@@ -18,7 +18,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             Map.entry("users_email_uq", "Пользователь с таким email уже существует"),
             Map.entry("rooms_name_uq", "Комната с таким названием уже существует"),
             Map.entry("rooms_name_not_blank", "Название комнаты не может быть пустым"),
-            Map.entry("rooms_capacity_range", "Вместимость должна быть от 1 до 500")
+            Map.entry("rooms_capacity_range", "Вместимость должна быть от 1 до 500"),
+            Map.entry("room_schedules_no_overlap", "Окно пересекается с уже существующим в этот день"),
+            Map.entry("room_schedules_slot_aligned", "Границы окна должны быть кратны 30 минутам"),
+            Map.entry("room_schedules_minutes_range", "Начало должно быть раньше конца в пределах суток"),
+            Map.entry("room_schedules_dow_check", "Некорректный день недели")
+
     );
 
     @ExceptionHandler(DataIntegrityViolationException.class)
