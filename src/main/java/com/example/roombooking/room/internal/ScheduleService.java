@@ -19,9 +19,10 @@ class ScheduleService {
 
     private final RoomRepository rooms;
     private final RoomScheduleRepository repo;
+    private final SlotService slots;
 
-    ScheduleService(RoomRepository rooms, RoomScheduleRepository repo) {
-        this.rooms = rooms; this.repo = repo;
+    ScheduleService(RoomRepository rooms, RoomScheduleRepository repo, SlotService slots) {
+        this.rooms = rooms; this.repo = repo; this.slots = slots;
     }
 
     @Transactional
@@ -29,6 +30,7 @@ class ScheduleService {
         rooms.findById(roomId).orElseThrow(() -> new NotFoundException("Комната не найдена"));
         var e = repo.saveAndFlush(new RoomScheduleEntity(roomId, r.dayOfWeek().getValue(),
                 toMinutes(r.startTime(), false), toMinutes(r.endTime(), true)));
+        slots.sync(roomId);
         return toResponse(e);
     }
 
@@ -38,6 +40,7 @@ class ScheduleService {
                 .orElseThrow(() -> new NotFoundException("Окно расписания не найдено"));
         repo.delete(e);
         repo.flush();
+        slots.sync(roomId);
     }
 
     @Transactional(readOnly = true)
