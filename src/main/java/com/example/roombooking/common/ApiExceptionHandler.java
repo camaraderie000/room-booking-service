@@ -22,8 +22,17 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             Map.entry("room_schedules_no_overlap", "Окно пересекается с уже существующим в этот день"),
             Map.entry("room_schedules_slot_aligned", "Границы окна должны быть кратны 30 минутам"),
             Map.entry("room_schedules_minutes_range", "Начало должно быть раньше конца в пределах суток"),
-            Map.entry("room_schedules_dow_check", "Некорректный день недели")
-
+            Map.entry("room_schedules_dow_check", "Некорректный день недели"),
+            Map.entry("bookings_no_overlap", "Это время уже занято"),
+            Map.entry("bookings_within_slots", "Выбранное время вне доступных слотов комнаты"),
+            Map.entry("bookings_must_be_future", "Нельзя бронировать время в прошлом"),
+            Map.entry("bookings_aligned_30m", "Время брони должно быть кратно 30 минутам"),
+            Map.entry("bookings_max_duration", "Максимальная длительность брони — 4 часа"),
+            Map.entry("bookings_time_order", "Время окончания должно быть позже начала"),
+            Map.entry("bookings_cancel_before_start", "Нельзя отменить уже начавшуюся встречу"),
+            Map.entry("bookings_immutable_fields", "Нельзя менять время, комнату и владельца брони"),
+            Map.entry("bookings_no_reactivation", "Отменённую бронь нельзя восстановить"),
+            Map.entry("bookings_room_fk", "Комната не найдена")
     );
 
     @ExceptionHandler(DataIntegrityViolationException.class)
