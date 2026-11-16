@@ -7,6 +7,8 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.roombooking.common.CurrentUser;
+import com.example.roombooking.common.NotFoundException;
 import com.example.roombooking.conference.ConferenceLinkProvider;
 
 import jakarta.validation.constraints.NotNull;
@@ -40,5 +42,17 @@ class BookingService {
     @Transactional(readOnly = true)
     List<BookingResponse> listMine(UUID userId) {
         return repo.findByUserIdOrderByStartAtDesc(userId).stream().map(BookingResponse::from).toList();
+    }
+
+    @Transactional
+    void cancel(UUID bookingId, CurrentUser actor) {
+        BookingEntity b = repo.findById(bookingId)
+                .orElseThrow(() -> new NotFoundException("Бронь не найдена"));
+        if (!actor.admin() && !b.getUserId().equals(actor.id())) {
+            throw new NotFoundException("Бронь не найдена");
+        }
+        if (b.getStatus() == BookingStatus.CANCELLED) return;   // идемпотентно
+        b.cancel(Instant.now());
+        repo.flush();
     }
 }
